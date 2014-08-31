@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>WebChat</title>
+<link href="/statics/css/style.css" rel="stylesheet">
+<script src="/statics/js/jquery.js"></script>
+<script src="/statics/js/Underscore.js"></script>
+<script src="/statics/js/backbone.js"></script>
+</head>
+<body>
+    <div class="wrap">
+    	<div class="main">
+    		<div class="head">
+    			<span>欢迎光临我的聊天室，当前时间为：<label id="nowdate"></label></span>
+    		</div>
+    		<div class="screen">
+    			<ul class="chat_list">
+    				<li>
+    					<div class="msgtitle">blue 2012-04-10 23:16:00</div>
+    					<p>大家好！</p>
+    				</li>
+    				<li>
+    					<div class="msgtitle">tom 2012-04-10 23:16:08</div>
+    					<p>你好！</p>
+    				</li>
+    			</ul>
+    		</div>
+    		<div class="send_message">
+    			<div class="message">
+    				<textarea name="" id="content" rows="4"></textarea>
+    			</div>
+    			<div class="opt">
+    				<label>昵称：<input type="text" id="nickname" name="nickname"></label>
+    				<button id="send">发送消息</button>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+</body>
+<script>
+	function show_time(){
+		var today,hour,second,minute,year,month,date,time;
+		today = new Date();
+		year = today.getFullYear();
+		month = today.getMonth() + 1;
+		date = today.getDate();
+		hour = today.getHours();
+		minute = today.getMinutes();
+		second = today.getSeconds();
+		if(minute<10){
+			minute = '0' + minute;
+		}
+		if(second<10){
+			second = '0' + second;
+		}
+
+		time = year + '-' + month + '-' + date + ' '+hour + ':' + minute + ':' + second;
+		$('#nowdate').html(time);
+	}
+	setInterval(show_time, 1000);
+</script>
+<script id='item-template' type="text/template">
+	<div class='msgtitle'>
+		<%= username %><%= date %><a id='destroy'>删除</a>
+	</div>
+	<p><%= content %></p>
+</script>
+<script src="/statics/js/chat.js"></script>
+</html>
