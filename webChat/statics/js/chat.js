@@ -48,7 +48,7 @@ var AppView = Backbone.View.extend({
 	initialize : function(){
 		_.bindAll(this, 'addOne','addAll');
 		this.nickname = this.$('#nickname');
-		this.textarea = this.$('#connect');
+		this.textarea = this.$('#content');
 
 		chatList.bind('add', this.addOne);
 		chatList.bind('reset',this.addAll);
@@ -75,8 +75,9 @@ var AppView = Backbone.View.extend({
 		chatList.create(this.newAttributes());
 		this.textarea.text('');
 		this.textarea.val('');
+		this.nickname.val('');
 		this.textarea.html('');
-		//console.log(this.newAttributes());
+		
 	},
 
 	newAttributes : function(){
