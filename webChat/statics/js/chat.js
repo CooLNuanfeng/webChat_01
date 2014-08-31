@@ -31,6 +31,7 @@ var ChatView = Backbone.View.extend({
 
 	render : function(){
 		$(this.el).html( this.template( this.model.toJSON()) )
+		console.log($(this.el))
 		return this;
 	},
 
@@ -58,8 +59,9 @@ var AppView = Backbone.View.extend({
 	},
 
 	addOne : function(chat){
-		if(!chat.isNew()){
-			var viem = new ChatView({model:chat});
+		if(chat.isNew()){
+			var view = new ChatView({model:chat});
+			console.log($(view).html());
 			this.$('.chat_list').append(view.render().el);
 			$('#screen').scrollTop( $('.chat_list').height() +200 );
 		}
@@ -74,15 +76,17 @@ var AppView = Backbone.View.extend({
 		this.textarea.text('');
 		this.textarea.val('');
 		this.textarea.html('');
+		//console.log(this.newAttributes());
 	},
 
 	newAttributes : function(){
-		var content = this.textarea.val();
+		var cont = this.textarea.val();
+		//console.log(this.textarea);
 		if(content == ''){
 			content = this.textarea.text();
 		}
 		return {
-			content : content,
+			content : cont,
 			username : this.nickname.val(),
 			date : get_time()
 		}
