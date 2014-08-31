@@ -55,7 +55,7 @@ public
 '''
 
 def say(request):
-    req = simplejson.loads(request.raw_post_data)
+    req = simplejson.loads(request.body)
     username = req['username']
     content = req['content']
 
