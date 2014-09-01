@@ -1,4 +1,4 @@
-
+var iNow =0
 var Chat = Backbone.Model.extend({
 	urlRoot :'',
 	defaults:{
@@ -25,17 +25,17 @@ var ChatView = Backbone.View.extend({
 
 	initialize: function(){
 		_.bindAll(this, 'render','remove');
+		console.log(this);
 		this.model.bind('change',this.render);
 		this.model.bind('destroy',this.remove); /*remove?*/
 	},
 
 	render : function(){
 		$(this.el).html( this.template( this.model.toJSON()) )
-		console.log($(this.el))
 		return this;
 	},
 
-	clear : function(){
+	clear : function(){   //clear ???????
 		this.model.clear();
 	}
 })
@@ -47,6 +47,7 @@ var AppView = Backbone.View.extend({
 	},
 	initialize : function(){
 		_.bindAll(this, 'addOne','addAll');
+		console.log(this);
 		this.nickname = this.$('#nickname');
 		this.textarea = this.$('#content');
 
@@ -54,14 +55,18 @@ var AppView = Backbone.View.extend({
 		chatList.bind('reset',this.addAll);
 		chatList.fetch();
 		setInterval(function(){
-			chatList.fetch({add: true});
-		}, 5000)
+			chatList.fetch({
+				add: true
+			});
+		}, 1000)
 	},
 
-	addOne : function(chat){
-		if(chat.isNew()){
+	addOne : function(chat){   // chat???????
+
+		if(!chat.isNew()){
+
 			var view = new ChatView({model:chat});
-			console.log($(view).html());
+
 			this.$('.chat_list').append(view.render().el);
 			$('#screen').scrollTop( $('.chat_list').height() +200 );
 		}
@@ -73,10 +78,10 @@ var AppView = Backbone.View.extend({
 
 	say : function(){
 		chatList.create(this.newAttributes());
-		this.textarea.text('');
+		//this.textarea.text('');
 		this.textarea.val('');
 		this.nickname.val('');
-		this.textarea.html('');
+		//this.textarea.html('');
 		
 	},
 
@@ -116,5 +121,6 @@ function get_time(){
 		}
 
 		time = year + '-' + month + '-' + date + ' '+hour + ':' + minute + ':' + second;
+		console.log(time);   //服务器时间问题
 		return time;
 }
