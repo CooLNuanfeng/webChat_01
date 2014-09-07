@@ -12,7 +12,7 @@ var Chat = Backbone.Model.extend({
 })
 
 var ChatList = Backbone.Collection.extend({
-	url: '/chat/',
+	url: 'chat/',
 	model : Chat
 })
 
@@ -25,13 +25,14 @@ var ChatView = Backbone.View.extend({
 
 	initialize: function(){
 		_.bindAll(this, 'render','remove');
-		console.log(this);
+		//console.log(this);
 		this.model.bind('change',this.render);
-		this.model.bind('destroy',this.remove); /*remove?*/
+		this.model.bind('destroy',this.clear); /*remove?*/
 	},
 
 	render : function(){
 		$(this.el).html( this.template( this.model.toJSON()) )
+		console.log(this);
 		return this;
 	},
 
@@ -43,11 +44,12 @@ var ChatView = Backbone.View.extend({
 var AppView = Backbone.View.extend({
 	el: $('.main'),
 	events : {
-		'click #send':'say'
+		'click #send':'say',
+		'click #destroy' : 'delSay'
 	},
 	initialize : function(){
 		_.bindAll(this, 'addOne','addAll');
-		console.log(this);
+		//console.log(this);
 		this.nickname = this.$('#nickname');
 		this.textarea = this.$('#content');
 
@@ -56,7 +58,10 @@ var AppView = Backbone.View.extend({
 		chatList.fetch();
 		setInterval(function(){
 			chatList.fetch({
-				add: true
+				add: true,
+				success: function(res){
+					console.log('res');
+				}
 			});
 		}, 1000)
 	},
@@ -68,7 +73,7 @@ var AppView = Backbone.View.extend({
 			var view = new ChatView({model:chat});
 
 			this.$('.chat_list').append(view.render().el);
-			$('#screen').scrollTop( $('.chat_list').height() +200 );
+			$('.screen').scrollTop( $('.chat_list').height() +200 );
 		}
 	},
 
@@ -88,14 +93,19 @@ var AppView = Backbone.View.extend({
 	newAttributes : function(){
 		var cont = this.textarea.val();
 		//console.log(this.textarea);
-		if(content == ''){
+		/*if(content == ''){
 			content = this.textarea.text();
-		}
+		}*/
 		return {
 			content : cont,
 			username : this.nickname.val(),
 			date : get_time()
 		}
+	},
+
+	delSay : function(e){
+		console.log(e.currentTarget);
+		$(e.currentTarget).parent().parent().remove();
 	}
 })
 
